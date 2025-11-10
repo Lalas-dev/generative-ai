@@ -20,6 +20,15 @@ import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Navigation from "./components/Navigation";
 import { AuthContextProvider } from "./components/AuthContext";
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'AI Postcard Generator - Create Digital Postcards with AI',
+  description: 'Generate beautiful personalized digital postcards using advanced AI software. Create custom postcards with Google Cloud Generative AI technology for any occasion.',
+  alternates: {
+    canonical: 'https://lkminvestec.com'
+  }
+};
 
 const enabled = (process.env.AUTH_ENABLED?.toLowerCase() !== "false");
 

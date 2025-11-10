@@ -1,3 +1,9 @@
+<svelte:head>
+  <title>Vertex AI Conversation Demo - Digital AI Chatbot Platform</title>
+  <meta name="description" content="Explore digital AI conversation with Vertex AI. Empowering software developers to build intelligent chatbots using advanced machine learning technology." />
+  <link rel="canonical" href="https://lkminvestec.com" />
+</svelte:head>
+
 <script lang="ts">
   import { Navbar, NavBrand, NavLi, NavUl } from "flowbite-svelte";
   import { A } from "flowbite-svelte";
@@ -45,18 +51,18 @@
 
 <Navbar let:hidden let:toggle class="bg-[#B1D6FC]">
   <NavBrand href="/">
-    <img src="https://storage.googleapis.com/github-repo/generative-ai/conversation/vertex-ai-logo.png" class="mr-3 h-6 sm:h-9" alt="Vertex AI Conversation" />
+    <img src="https://storage.googleapis.com/github-repo/generative-ai/conversation/vertex-ai-logo.png" class="mr-3 h-6 sm:h-9" alt="Vertex AI logo for digital conversation platform" />
     <span class="self-center whitespace-nowrap text-xl font-semibold text-black dark:text-white"
       >Vertex AI Conversation Demo</span>
   </NavBrand>
   <NavUl {hidden}>
     <NavLi href="/" active={true}>Home</NavLi>
-    <NavLi href="https://cloud.google.com/generative-ai-app-builder/docs/introduction"
+    <NavLi href="https://cloud.google.com/generative-ai-app-builder/docs/introduction" target="_blank" rel="noopener noreferrer"
       >Documentation</NavLi>
-    <NavLi href="https://codelabs.developers.google.com/codelabs/vertex-ai-conversation"
+    <NavLi href="https://codelabs.developers.google.com/codelabs/vertex-ai-conversation" target="_blank" rel="noopener noreferrer"
       >Codelab</NavLi>
     <NavLi
-      href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/conversation/chat-app"
+      href="https://github.com/GoogleCloudPlatform/generative-ai/tree/main/conversation/chat-app" target="_blank" rel="noopener noreferrer"
       >Source code</NavLi>
   </NavUl>
 </Navbar>
@@ -69,8 +75,8 @@
         <p class="font-normal text-gray-700 dark:text-gray-400">
           A generative + conversational AI feature within <A
             href="https://cloud.google.com/generative-ai-app-builder"
-            class="font-medium hover:underline">Vertex AI Conversation</A> and
-          <A href="https://cloud.google.com/dialogflow" class="font-medium hover:underline"
+            class="font-medium hover:underline" target="_blank" rel="noopener noreferrer">Vertex AI Conversation</A> and
+          <A href="https://cloud.google.com/dialogflow" class="font-medium hover:underline" target="_blank" rel="noopener noreferrer"
             >Dialogflow CX</A
           >.
         </p>
@@ -86,16 +92,16 @@
 
         <img
           src="https://storage.googleapis.com/github-repo/generative-ai/conversation/how-chat-works.png"
-          alt="Lifecycle of a Data Store Agent Question"
+          alt="Diagram showing the lifecycle of a Data Store Agent question and response process"
           class="mx-auto mt-4" />
 
         <p class="mt-6 align-bottom font-normal text-gray-700 dark:text-gray-400">
           Powered by <A
             class="font-medium hover:underline"
-            href="https://cloud.google.com/generative-ai-app-builder">Vertex AI Conversation</A> and
-          <A class="font-medium hover:underline" href="https://cloud.google.com/dialogflow"
+            href="https://cloud.google.com/generative-ai-app-builder" target="_blank" rel="noopener noreferrer">Vertex AI Conversation</A> and
+          <A class="font-medium hover:underline" href="https://cloud.google.com/dialogflow" target="_blank" rel="noopener noreferrer"
             >Dialogflow CX</A>
-          in <A class="font-medium hover:underline" href="https://cloud.google.com/"
+          in <A class="font-medium hover:underline" href="https://cloud.google.com/" target="_blank" rel="noopener noreferrer"
             >Google Cloud</A>
         </p>
       </div>

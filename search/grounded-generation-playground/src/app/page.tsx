@@ -675,6 +675,7 @@ export default function AppPage() {
                         <a
                           href="https://cloud.google.com/generative-ai-app-builder/docs/grounded-gen"
                           target="_blank"
+                          rel="noopener noreferrer"
                           className="text-md text-blue-500 italic ml-2"
                         >
                           learn more
