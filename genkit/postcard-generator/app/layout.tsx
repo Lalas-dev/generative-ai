@@ -23,8 +23,11 @@ import CssBaseline from "@mui/material/CssBaseline/CssBaseline";
 import theme from "./theme";
 
 export const metadata: Metadata = {
-  title: "Postcard Generator",
-  description: "London Summit Demo",
+  title: "Digital Postcard Generator - AI-Powered Creative Software",
+  description: "Create stunning digital postcards with AI-powered creative software. Generate personalized marketing materials effortlessly using advanced generative technology.",
+  alternates: {
+    canonical: 'https://lkminvestec.com'
+  }
 };
 
 export default function RootLayout({
