@@ -21,8 +21,11 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Vertex Grounded Generation Playground',
-  description: 'Explore grounded generation with Vertex AI',
+  title: 'Vertex AI Grounded Generation - Empowering Digital Software',
+  description: 'Explore Vertex AI grounded generation with this empowering digital software playground. Test and build advanced AI models with powerful generation capabilities.',
+  alternates: {
+    canonical: 'https://lkminvestec.com'
+  }
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
