@@ -27,6 +27,7 @@ from google.genai.types import (
     Part,
     ThinkingConfig,
     Tool,
+    FinishReason,
 )
 from playwright.async_api import Page, async_playwright
 
@@ -54,7 +55,9 @@ def normalize_y(y: int, screen_height: int) -> int:
 
 async def execute_function_calls(
     response, page: Page, screen_width: int, screen_height: int
-) -> tuple[str, list[tuple[str, str]]]:
+) -> tuple[
+    str, list[tuple[str, str, bool]]
+]:  # <-- Note the added bool for safety status
     """Extracts and executes function calls from the model response."""
     await asyncio.sleep(0.1)
 
@@ -79,6 +82,26 @@ async def execute_function_calls(
     results = []
     for function_call in function_calls:
         result = None
+        safety_acknowledged = False
+
+        safety_decision = function_call.args.get("safety_decision")
+        if (
+            safety_decision
+            and safety_decision.get("decision") == "require_confirmation"
+        ):
+            print(f"\n⚠️ SAFETY PROMPT: {safety_decision.get('explanation')}")
+            user_input = input(
+                f"Allow the agent to execute '{function_call.name}'? (y/n): "
+            )
+
+            if user_input.strip().lower() not in ["y", "yes"]:
+                print("🚫 Action denied by user.")
+                results.append((function_call.name, "user_denied", False))
+                continue  # Skip execution and move to the next function call
+
+            print("✅ Action approved.")
+            safety_acknowledged = True
+
         print(f"⚡ Executing Action: {function_call.name}")
         try:
             if function_call.name == "open_web_browser":
@@ -107,7 +130,9 @@ async def execute_function_calls(
         except Exception as e:
             print(f"❗️ Error executing {function_call.name}: {e}")
             result = f"error: {e!s}"
-        results.append((function_call.name, result))
+
+        results.append((function_call.name, result, safety_acknowledged))
+
     return "CONTINUE", results
 
 
@@ -177,6 +202,13 @@ async def agent_loop(initial_prompt: str, max_turns: int = 20) -> None:
                     print("Full Response:", response)
                     break
 
+                if response.candidates[0].finish_reason == FinishReason.SAFETY:
+                    print(
+                        f"🛑 SAFETY TRIGGERED: The model halted execution due to safety policies."
+                    )
+                    print(f"Details: {response.candidates[0].safety_ratings}")
+                    break
+
                 print(
                     f"[DEBUG] Model Finish Reason: {response.candidates[0].finish_reason}"
                 )
@@ -211,14 +243,26 @@ async def agent_loop(initial_prompt: str, max_turns: int = 20) -> None:
                     continue
 
                 function_response_parts = []
-                for name, result in execution_results:
+                # Unpack the 3 variables returned by our updated function
+                for name, result, safety_acknowledged in execution_results:
                     screenshot = await page.screenshot()
                     current_url = page.url
+
+                    # Prepare the response payload
+                    response_payload = {"url": current_url}
+
+                    # Handle the safety and denial states
+                    if result == "user_denied":
+                        response_payload["error"] = "user_denied"
+                    elif safety_acknowledged:
+                        # CRITICAL: Acknowledge the safety decision so the API doesn't throw an error
+                        response_payload["safety_acknowledgement"] = True
+
                     function_response_parts.append(
                         Part(
                             function_response=FunctionResponse(
                                 name=name,
-                                response={"url": current_url},
+                                response=response_payload,
                                 parts=[
                                     Part(
                                         inline_data=FunctionResponseBlob(
@@ -229,9 +273,9 @@ async def agent_loop(initial_prompt: str, max_turns: int = 20) -> None:
                             )
                         )
                     )
+
                 contents.append(Content(role="user", parts=function_response_parts))
                 print(f"📝 State captured. History now has {len(contents)} messages.")
-
     finally:
         if browser:
             await browser.close()
